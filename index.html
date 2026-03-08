@@ -1,7 +1,33 @@
-<script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>9MB Compressor</title>
+    <style>
+        :root { --accent: #5865F2; --bg: #0f1012; --card: #1e1f22; --text: #ffffff; }
+        body { font-family: sans-serif; background: var(--bg); color: var(--text); display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .container { background: var(--card); padding: 2rem; border-radius: 12px; width: 90%; max-width: 400px; text-align: center; border: 1px solid #333; }
+        .btn { background: var(--accent); color: white; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
+        .btn:disabled { background: #444; cursor: not-allowed; }
+        #status { margin-top: 15px; font-size: 0.9rem; color: #faa61a; }
+        video { width: 100%; border-radius: 8px; margin-top: 15px; display: none; }
+        input[type="file"] { margin: 15px 0; color: #ccc; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Video Compressor</h2>
+        <input type="file" id="videoInput" accept="video/*">
+        <button id="compressBtn" class="btn">Compress Video</button>
+        <div id="status">Ready</div>
+        <video id="outputVideo" controls></video>
+        <a id="dlLink" style="display:none;"><button class="btn" style="background:#43b581">Download</button></a>
+    </div>
+
+    <script>
         const btn = document.getElementById('compressBtn');
         const status = document.getElementById('status');
-        
         const TOKEN = "kX9_qP2_rM88_vFz_W42_L9k_3nH_7pX_R51_ZbQ_v92_Xm1_K4q_#88_Z3p_L0ck";
 
         btn.onclick = async () => {
@@ -15,7 +41,7 @@
             form.append('file', file);
 
             try {
-                // FIXED: Changed to HTTPS and your DuckDNS domain
+                // Now using your secure DuckDNS domain
                 const res = await fetch('https://kebucompress.duckdns.org/compress', {
                     method: 'POST',
                     headers: { 'x-session-token': TOKEN },
@@ -23,7 +49,7 @@
                 });
 
                 if (res.status === 429) {
-                    throw new Error("Slow down! You've reached the limit. Try again in 5 minutes.");
+                    throw new Error("Slow down! Limit reached. Try again in 5 minutes.");
                 }
                 
                 if (!res.ok) throw new Error("Server error or invalid token.");
@@ -48,3 +74,5 @@
             }
         };
     </script>
+</body>
+</html>
